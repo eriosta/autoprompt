@@ -1,22 +1,44 @@
 import PyPDF2
+import pandas as pd
+import os
+import glob
 
-FILE_PATH = 'pdfs\practice-exam-2013-questions-and-answers.pdf'
+def read_pdfs(path):
 
-with open(FILE_PATH, mode='rb') as f:
+    """
+    This function reads PDF files and converts all text data into a single string.
+    
+    Parameters
+    ----------
+    path : character, string
+        Path to the directory with PDF files
+        
+    Returns
+    -------
+    A character string with all text data from PDF files
+    """
 
-    text = []
+    ls = []
 
-    reader = PyPDF2.PdfReader(f)
+    for file in os.listdir(path):
 
-    for page_number in range(0, len(reader.pages)):
-         page = reader.pages[page_number]
-         text.append(page.extract_text())
+        file_full = path + '/' + file
 
+        with open(file_full, mode='rb') as f:
 
+            text = []
 
-text
-s = '\n'.join(text)
-text=s
+            reader = PyPDF2.PdfReader(f)
 
+            for page_number in range(0, len(reader.pages)):
+                page = reader.pages[page_number]
+                text.append(page.extract_text())
+            
+            text = '\n'.join(text)
+            ls.append(text)
 
-# q = s + ""
+    return ('\n'.join(ls))
+
+text = read_pdfs('pdfs')
+
+len(text)
